@@ -30,11 +30,19 @@ public class TicTacToe {
 		printGameBoard(gameBoard);
 
 		do {
-			Scanner scan = new Scanner(System.in);
-			System.out.println("Enter your placement (1-9): ");
-			Player1Pos = scan.nextInt();
+			Scanner scan1 = new Scanner(System.in);
+			Scanner scan2 = new Scanner(System.in);
+
+			System.out.println("Player 1 Enter your placement (1-9): ");
+			Player1Pos = scan1.nextInt();
 
 			placePiece(gameBoard, Player1Pos, "player1");
+			printGameBoard(gameBoard);
+
+			System.out.println("Player 2 Enter your placement (1-9): ");
+			Player2Pos = scan2.nextInt();
+
+			placePiece(gameBoard, Player2Pos, "player2");
 			printGameBoard(gameBoard);
 		} while (flag);
 
