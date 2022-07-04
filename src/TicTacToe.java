@@ -18,6 +18,14 @@ public class TicTacToe {
 		}
 	}
 
+	public ArrayList<Integer> getPlayer1Pos() {
+		return player1Pos;
+	}
+
+	public ArrayList<Integer> getPlayer2Pos() {
+		return player2Pos;
+	}
+
 	public void startGame() {
 
 		String gameMode;
@@ -28,19 +36,30 @@ public class TicTacToe {
 				+ "Bottom row 7-9 from left to right");
 
 		gameMode = getGameMode();
-		printGameBoard(gameBoard);
 
 		if (gameMode.equals("p")) {
+			printGameBoard(gameBoard);
 			twoPlayerGameMode();
 		} else {
-			initAI();
+			AI ai = new AI();
+			String strategy = getAIStrategy();
+			if (strategy.equals("n")) {
+				ai.setStrategy(new RandomStrategy());
+			}
+			printGameBoard(gameBoard);
+			aiGameMode(ai);
 		}
 
 	}
 
-	private void initAI() {
-		// TODO Auto-generated method stub
-
+	private String getAIStrategy() {
+		System.out.println("Choose AI difficulty: Normal (N) - Unbeatable (U)");
+		String result = Main.scanner.next().toLowerCase();
+		while (!result.equals("n") && !result.equals("u")) {
+			System.out.println("Please type either 'N' or 'U' for Normal difficulty or Unbeatable difficulty");
+			result = Main.scanner.next();
+		}
+		return result;
 	}
 
 	public String getGameMode() {
@@ -48,10 +67,33 @@ public class TicTacToe {
 		System.out.println("Choose game mode: Two player game (P) - Play against AI (A)");
 		result = Main.scanner.next();
 		while (!result.equals("p") && !result.equals("a")) {
-			System.out.println("please type either 'P' or 'A' to have a two player game or match against an AI");
+			System.out.println("Please type either 'P' or 'A' to have a two player game or match against an AI");
 			result = Main.scanner.next();
 		}
 		return result.toLowerCase();
+	}
+
+	public void aiGameMode(AI ai) {
+		boolean flag = true;
+		do {
+			getPlacement("Player 1");
+			if (gameEnd) {
+				flag = false;
+				System.out.println(checkWinner());
+				break;
+			}
+
+			placePiece(gameBoard, ai.placement(player1Pos, player2Pos), "AI");
+			checkWinner();
+			System.out.println("\nAI makes a move\n");
+			printGameBoard(gameBoard);
+
+			if (gameEnd) {
+				flag = false;
+				System.out.println(checkWinner());
+				break;
+			}
+		} while (flag);
 	}
 
 	public void twoPlayerGameMode() {
@@ -76,7 +118,7 @@ public class TicTacToe {
 	public void getPlacement(String player) {
 
 		int pos;
-		System.out.println(player + " Enter your placement (1-9): ");
+		System.out.println("\n" + player + " Enter your placement (1-9): \n");
 		pos = Main.scanner.nextInt();
 
 		while (player1Pos.contains(pos) || player2Pos.contains(pos) || pos < 1 || pos > 9) {
