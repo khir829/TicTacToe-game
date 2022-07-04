@@ -1,8 +1,13 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class TicTacToe {
 	private char[][] gameBoard = { { ' ', '|', ' ', '|', ' ' }, { '-', '+', '-', '+', '-' },
 			{ ' ', '|', ' ', '|', ' ' }, { '-', '+', '-', '+', '-' }, { ' ', '|', ' ', '|', ' ' } };
+	private ArrayList<Integer> player1Pos = new ArrayList<Integer>();
+	private ArrayList<Integer> player2Pos = new ArrayList<Integer>();
 
 	public static void printGameBoard(char[][] gameBoard) {
 		for (char[] row : gameBoard) {
@@ -14,19 +19,57 @@ public class TicTacToe {
 	}
 
 	public void startGame() {
-		Scanner scan = new Scanner(System.in);
+
+		boolean flag = true;
 		int Player1Pos;
 		int Player2Pos;
+
 		System.out.println("Top row 1-3 from left to right\n" + "Middle row 4-6 from left to right\n"
 				+ "Bottom row 7-9 from left to right");
+
 		printGameBoard(gameBoard);
 
-		System.out.println("Enter your placement (1-9): ");
-		Player1Pos = scan.nextInt();
+		do {
+			Scanner scan = new Scanner(System.in);
+			System.out.println("Enter your placement (1-9): ");
+			Player1Pos = scan.nextInt();
 
-		placePiece(gameBoard, Player1Pos, "player1");
-		printGameBoard(gameBoard);
+			placePiece(gameBoard, Player1Pos, "player1");
+			printGameBoard(gameBoard);
+		} while (flag);
 
+	}
+
+	public String checkWinner() {
+		List topRow = Arrays.asList(1, 2, 3);
+		List midRow = Arrays.asList(4, 5, 6);
+		List botRow = Arrays.asList(7, 8, 9);
+		List leftCol = Arrays.asList(1, 4, 7);
+		List midCol = Arrays.asList(2, 5, 8);
+		List rightCol = Arrays.asList(3, 6, 9);
+		List diagonal1 = Arrays.asList(1, 5, 9);
+		List diagonal2 = Arrays.asList(7, 5, 3);
+
+		List<List> winCon = new ArrayList<List>();
+		winCon.add(topRow);
+		winCon.add(midRow);
+		winCon.add(botRow);
+		winCon.add(leftCol);
+		winCon.add(midCol);
+		winCon.add(rightCol);
+		winCon.add(diagonal1);
+		winCon.add(diagonal2);
+
+		for (List list : winCon) {
+			if (player1Pos.containsAll(list)) {
+				return "Player 1 Wins";
+			} else if (player2Pos.containsAll(list)) {
+				return "Player 2 Wins";
+			} else if (player1Pos.size() + player2Pos.size() == 9) {
+				return "It's a draw";
+			}
+		}
+		return "";
 	}
 
 	public void placePiece(char[][] gameBoard, int pos, String user) {
