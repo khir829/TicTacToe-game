@@ -8,6 +8,7 @@ public class TicTacToe {
 			{ ' ', '|', ' ', '|', ' ' }, { '-', '+', '-', '+', '-' }, { ' ', '|', ' ', '|', ' ' } };
 	private ArrayList<Integer> player1Pos = new ArrayList<Integer>();
 	private ArrayList<Integer> player2Pos = new ArrayList<Integer>();
+	private boolean gameEnd = false;
 
 	public static void printGameBoard(char[][] gameBoard) {
 		for (char[] row : gameBoard) {
@@ -21,8 +22,6 @@ public class TicTacToe {
 	public void startGame() {
 
 		boolean flag = true;
-		int Player1Pos;
-		int Player2Pos;
 
 		System.out.println("Top row 1-3 from left to right\n" + "Middle row 4-6 from left to right\n"
 				+ "Bottom row 7-9 from left to right");
@@ -30,22 +29,34 @@ public class TicTacToe {
 		printGameBoard(gameBoard);
 
 		do {
-			Scanner scan1 = new Scanner(System.in);
-			Scanner scan2 = new Scanner(System.in);
+			getPlacement("player1");
 
-			System.out.println("Player 1 Enter your placement (1-9): ");
-			Player1Pos = scan1.nextInt();
+			if (gameEnd) {
+				flag = false;
+				System.out.println(checkWinner());
+				break;
+			}
 
-			placePiece(gameBoard, Player1Pos, "player1");
-			printGameBoard(gameBoard);
-
-			System.out.println("Player 2 Enter your placement (1-9): ");
-			Player2Pos = scan2.nextInt();
-
-			placePiece(gameBoard, Player2Pos, "player2");
-			printGameBoard(gameBoard);
+			getPlacement("player2");
+			if (gameEnd) {
+				flag = false;
+				System.out.println(checkWinner());
+				break;
+			}
 		} while (flag);
 
+	}
+
+	public void getPlacement(String player) {
+
+		Scanner scan = new Scanner(System.in);
+		int pos;
+		System.out.println("Player 1 Enter your placement (1-9): ");
+		pos = scan.nextInt();
+
+		placePiece(gameBoard, pos, player);
+		checkWinner();
+		printGameBoard(gameBoard);
 	}
 
 	public String checkWinner() {
@@ -70,11 +81,14 @@ public class TicTacToe {
 
 		for (List list : winCon) {
 			if (player1Pos.containsAll(list)) {
-				return "Player 1 Wins";
+				gameEnd = true;
+				return "Player 1 Wins!";
 			} else if (player2Pos.containsAll(list)) {
-				return "Player 2 Wins";
+				gameEnd = true;
+				return "Player 2 Wins!";
 			} else if (player1Pos.size() + player2Pos.size() == 9) {
-				return "It's a draw";
+				gameEnd = true;
+				return "It's a draw!";
 			}
 		}
 		return "";
@@ -85,8 +99,10 @@ public class TicTacToe {
 		char symbol = 'X';
 
 		if (user.equals("player1")) {
+			player1Pos.add(pos);
 			symbol = 'X';
 		} else {
+			player2Pos.add(pos);
 			symbol = 'O';
 		}
 
