@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 public class TicTacToe {
 	private char[][] gameBoard = { { ' ', '|', ' ', '|', ' ' }, { '-', '+', '-', '+', '-' },
@@ -21,13 +20,19 @@ public class TicTacToe {
 
 	public void startGame() {
 
-		boolean flag = true;
+		System.out.println("Welcome to the Tic Tac Toe game application!");
 
 		System.out.println("Top row 1-3 from left to right\n" + "Middle row 4-6 from left to right\n"
 				+ "Bottom row 7-9 from left to right");
 
 		printGameBoard(gameBoard);
 
+		twoPlayerGameMode();
+
+	}
+
+	public void twoPlayerGameMode() {
+		boolean flag = true;
 		do {
 			getPlacement("Player 1");
 			if (gameEnd) {
@@ -43,20 +48,18 @@ public class TicTacToe {
 				break;
 			}
 		} while (flag);
-
 	}
 
 	public void getPlacement(String player) {
 
-		Scanner scan = new Scanner(System.in);
 		int pos;
 		System.out.println(player + " Enter your placement (1-9): ");
-		pos = scan.nextInt();
+		pos = Main.scanner.nextInt();
 
-		while (player1Pos.contains(pos) || player2Pos.contains(pos)) {
+		while (player1Pos.contains(pos) || player2Pos.contains(pos) || pos < 1 || pos > 9) {
 			printGameBoard(gameBoard);
-			System.out.println("Position taken! Enter a valid position");
-			pos = scan.nextInt();
+			System.out.println("Enter a valid position");
+			pos = Main.scanner.nextInt();
 		}
 
 		placePiece(gameBoard, pos, player);
