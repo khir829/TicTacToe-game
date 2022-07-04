@@ -45,6 +45,8 @@ public class TicTacToe {
 			String strategy = getAIStrategy();
 			if (strategy.equals("n")) {
 				ai.setStrategy(new RandomStrategy());
+			} else {
+				ai.setStrategy(new UnbeatableStrategy());
 			}
 			printGameBoard(gameBoard);
 			aiGameMode(ai);
