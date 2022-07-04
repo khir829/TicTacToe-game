@@ -20,15 +20,38 @@ public class TicTacToe {
 
 	public void startGame() {
 
+		String gameMode;
+
 		System.out.println("Welcome to the Tic Tac Toe game application!");
 
 		System.out.println("Top row 1-3 from left to right\n" + "Middle row 4-6 from left to right\n"
 				+ "Bottom row 7-9 from left to right");
 
+		gameMode = getGameMode();
 		printGameBoard(gameBoard);
 
-		twoPlayerGameMode();
+		if (gameMode.equals("p")) {
+			twoPlayerGameMode();
+		} else {
+			initAI();
+		}
 
+	}
+
+	private void initAI() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public String getGameMode() {
+		String result;
+		System.out.println("Choose game mode: Two player game (P) - Play against AI (A)");
+		result = Main.scanner.next();
+		while (!result.equals("p") && !result.equals("a")) {
+			System.out.println("please type either 'P' or 'A' to have a two player game or match against an AI");
+			result = Main.scanner.next();
+		}
+		return result.toLowerCase();
 	}
 
 	public void twoPlayerGameMode() {
