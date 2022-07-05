@@ -81,6 +81,9 @@ public class TicTacToe {
 			getPlacement("Player 1");
 			if (gameEnd) {
 				flag = false;
+				System.out.println("Player " + player1Pos);
+				System.out.println("AI " + player2Pos);
+
 				System.out.println(checkWinner());
 				break;
 			}
@@ -92,6 +95,9 @@ public class TicTacToe {
 
 			if (gameEnd) {
 				flag = false;
+				System.out.println("Player " + player1Pos);
+				System.out.println("AI " + player2Pos);
+
 				System.out.println(checkWinner());
 				break;
 			}
@@ -161,10 +167,11 @@ public class TicTacToe {
 			} else if (player2Pos.containsAll(list)) {
 				gameEnd = true;
 				return "Player 2 Wins!";
-			} else if (player1Pos.size() + player2Pos.size() == 9) {
-				gameEnd = true;
-				return "It's a draw!";
 			}
+		}
+		if (player1Pos.size() + player2Pos.size() == 9) {
+			gameEnd = true;
+			return "It's a draw!";
 		}
 		return "";
 	}

@@ -1,10 +1,8 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class UnbeatableStrategy implements StrategyAI {
 
@@ -16,7 +14,7 @@ public class UnbeatableStrategy implements StrategyAI {
 	public int minimax(ArrayList<Integer> player1Pos, ArrayList<Integer> AIPos) {
 		ArrayList<Integer> newPlayerMoves = player1Pos;
 		ArrayList<Integer> newAIMoves = AIPos;
-		Set<Integer> emptySpots = new HashSet<Integer>();
+		ArrayList<Integer> emptySpots = new ArrayList<Integer>();
 		Map<Integer, Integer> move = new HashMap<Integer, Integer>();
 		int bestScore = -10000;
 		int bestMove = 1;
@@ -27,29 +25,38 @@ public class UnbeatableStrategy implements StrategyAI {
 			}
 		}
 
+//		System.out.println(emptySpots);
+
 		if (checkWinner(player1Pos)) {
 			return -1 * (emptySpots.size() + 1);
 		} else if (checkWinner(AIPos)) {
 			return 1 * (emptySpots.size() + 1);
-		} else if (player1Pos.size() + AIPos.size() == 9) {
+		} else if (emptySpots.size() == 0) {
 			return 0;
 		}
 
-		for (int i : emptySpots) {
+		for (int i = 0; i < emptySpots.size(); i++) {
 			int score;
 
 			if (player1Pos.size() == AIPos.size()) {
-				newPlayerMoves.add(i);
-//				System.out.println("P1 " + newPlayerMoves);
+				newPlayerMoves.add(emptySpots.get(i));
+				System.out.println("P1 " + newPlayerMoves);
 				score = minimax(newPlayerMoves, AIPos);
-				newPlayerMoves.remove(newPlayerMoves.indexOf(i));
+				newPlayerMoves.remove(emptySpots.get(i));
 			} else {
-				newAIMoves.add(i);
-//				System.out.println("AI " + newAIMoves);
+				newAIMoves.add(emptySpots.get(i));
+				System.out.println("AI " + newAIMoves);
 				score = minimax(player1Pos, newAIMoves);
-				newAIMoves.remove(newAIMoves.indexOf(i));
+				newAIMoves.remove(emptySpots.get(i));
 			}
-			move.put(i, score);
+			if (move.containsKey(emptySpots.get(i))) {
+				if (move.get(emptySpots.get(i)) < score) {
+					move.put(emptySpots.get(i), score);
+				}
+			} else {
+				move.put(emptySpots.get(i), score);
+			}
+//			System.out.println(score);
 		}
 
 		for (int key : move.keySet()) {
@@ -58,7 +65,7 @@ public class UnbeatableStrategy implements StrategyAI {
 				bestScore = move.get(key);
 			}
 		}
-		System.out.println(bestMove);
+//		System.out.println(move);
 		return bestMove;
 	}
 
