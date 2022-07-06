@@ -8,74 +8,83 @@ public class UnbeatableStrategy implements StrategyAI {
 
 	@Override
 	public int SymbolPlacement(ArrayList<Integer> player1Pos, ArrayList<Integer> AIPos) {
-		return minimax(player1Pos, AIPos);
+		int bestMove = minimax(player1Pos, AIPos).get(1);
+
+		return bestMove;
 	}
 
-	public int minimax(ArrayList<Integer> player1Pos, ArrayList<Integer> AIPos) {
+	public ArrayList<Integer> minimax(ArrayList<Integer> player1Pos, ArrayList<Integer> AIPos) {
 		ArrayList<Integer> newPlayerMoves = player1Pos;
 		ArrayList<Integer> newAIMoves = AIPos;
 		ArrayList<Integer> emptySpots = new ArrayList<Integer>();
-		Map<Integer, Integer> move = new HashMap<Integer, Integer>();
-		int bestScore = -10000;
-		int bestMove = 1;
+		ArrayList<Integer> result = new ArrayList<Integer>();
+
+		ArrayList<Integer> best = new ArrayList<Integer>();
+		Map<Integer, Integer> moveList = new HashMap<Integer, Integer>();
+		int bestScore;
 
 		for (int i = 1; i <= 9; i++) {
 			if (!player1Pos.contains(i) && !AIPos.contains(i)) {
 				emptySpots.add(i);
 			}
 		}
-
-//		System.out.println(emptySpots);
-
 		if (checkWinner(player1Pos)) {
-			return -1 * (emptySpots.size() + 1);
+			result.add(-1 * (emptySpots.size() + 1));
+			return result;
 		} else if (checkWinner(AIPos)) {
-			return 1 * (emptySpots.size() + 1);
+			result.add(1 * (emptySpots.size() + 1));
+			return result;
 		} else if (emptySpots.size() == 0) {
-			return 0;
+			result.add(0);
+			return result;
 		}
 
 		for (int i = 0; i < emptySpots.size(); i++) {
 			int score;
 
 			if (player1Pos.size() == AIPos.size()) {
+
 				newPlayerMoves.add(emptySpots.get(i));
-				System.out.println("P1 " + newPlayerMoves);
-				score = minimax(newPlayerMoves, AIPos);
+				score = minimax(newPlayerMoves, AIPos).get(0);
+				moveList.put(emptySpots.get(i), score);
 				newPlayerMoves.remove(emptySpots.get(i));
+
 			} else {
+
 				newAIMoves.add(emptySpots.get(i));
-				System.out.println("AI " + newAIMoves);
-				score = minimax(player1Pos, newAIMoves);
+				score = minimax(player1Pos, newAIMoves).get(0);
+				moveList.put(emptySpots.get(i), score);
 				newAIMoves.remove(emptySpots.get(i));
+
 			}
-			if (move.containsKey(emptySpots.get(i))) {
-				if (move.get(emptySpots.get(i)) < score) {
-					move.put(emptySpots.get(i), score);
+		}
+
+		if (player1Pos.size() == AIPos.size()) {
+			bestScore = 1000;
+			best.add(bestScore);
+			best.add(1);
+			for (int key : moveList.keySet()) {
+				if (moveList.get(key) < bestScore) {
+					bestScore = moveList.get(key);
+					best.set(0, moveList.get(key));
+					best.set(1, key);
 				}
-			} else {
-				move.put(emptySpots.get(i), score);
 			}
-//			System.out.println(score);
+		} else {
+			bestScore = -1000;
+			best.add(bestScore);
+			best.add(1);
+			for (int key : moveList.keySet()) {
+				if (moveList.get(key) > bestScore) {
+					bestScore = moveList.get(key);
+					best.set(0, moveList.get(key));
+					best.set(1, key);
+				}
+			}
 		}
+		return best;
 
-		for (int key : move.keySet()) {
-			if (move.get(key) > bestScore) {
-				bestMove = key;
-				bestScore = move.get(key);
-			}
-		}
-//		System.out.println(move);
-		return bestMove;
 	}
-
-//	public void obtainEmptySpots(ArrayList<Integer> player1Pos, ArrayList<Integer> AIPos) {
-//		for (int i = 1; i <= 9; i++) {
-//			if (!player1Pos.contains(i) && !AIPos.contains(i)) {
-//				emptySpots.add(i);
-//			}
-//		}
-//	}
 
 	private boolean checkWinner(ArrayList<Integer> pos) {
 		List topRow = Arrays.asList(1, 2, 3);
