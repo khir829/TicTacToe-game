@@ -13,6 +13,13 @@ public class UnbeatableStrategy implements StrategyAI {
 		return bestMove;
 	}
 
+	/**
+	 * This method returns a score based on the positions of the AI and the player
+	 * 
+	 * @param player1Pos The current positions of symbols of the first player
+	 * @param AIPosThe   current positions of symbols of the AI
+	 * @return the score of the placement
+	 */
 	public ArrayList<Integer> minimax(ArrayList<Integer> player1Pos, ArrayList<Integer> AIPos) {
 		ArrayList<Integer> newPlayerMoves = player1Pos;
 		ArrayList<Integer> newAIMoves = AIPos;
@@ -83,9 +90,15 @@ public class UnbeatableStrategy implements StrategyAI {
 			}
 		}
 		return best;
-
 	}
 
+	/**
+	 * This method checks if there is a winner based on input positions of the
+	 * symbols and the winning conditions
+	 * 
+	 * @param pos the position of the symbols
+	 * @return true or false depending on the symbol positions
+	 */
 	private boolean checkWinner(ArrayList<Integer> pos) {
 		List topRow = Arrays.asList(1, 2, 3);
 		List midRow = Arrays.asList(4, 5, 6);

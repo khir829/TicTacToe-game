@@ -5,10 +5,19 @@ import java.util.List;
 public class TicTacToe {
 	private char[][] gameBoard = { { ' ', '|', ' ', '|', ' ' }, { '-', '+', '-', '+', '-' },
 			{ ' ', '|', ' ', '|', ' ' }, { '-', '+', '-', '+', '-' }, { ' ', '|', ' ', '|', ' ' } };
+	private List<List<Integer>> winCondition = Arrays.asList(Arrays.asList(1, 2, 3), Arrays.asList(4, 5, 6),
+			Arrays.asList(7, 8, 9), Arrays.asList(1, 4, 7), Arrays.asList(2, 5, 8), Arrays.asList(3, 6, 9),
+			Arrays.asList(1, 5, 9), Arrays.asList(7, 5, 3));
+
 	private ArrayList<Integer> player1Pos = new ArrayList<Integer>();
 	private ArrayList<Integer> player2Pos = new ArrayList<Integer>();
 	private boolean gameEnd = false;
 
+	/**
+	 * This method prints out the game board state in a human readable way
+	 * 
+	 * @param gameBoard the state of the gamme
+	 */
 	public static void printGameBoard(char[][] gameBoard) {
 		for (char[] row : gameBoard) {
 			for (char c : row) {
@@ -18,14 +27,9 @@ public class TicTacToe {
 		}
 	}
 
-	public ArrayList<Integer> getPlayer1Pos() {
-		return player1Pos;
-	}
-
-	public ArrayList<Integer> getPlayer2Pos() {
-		return player2Pos;
-	}
-
+	/**
+	 * This method starts the Tic Tac Toe game
+	 */
 	public void startGame() {
 
 		String gameMode;
@@ -54,6 +58,11 @@ public class TicTacToe {
 
 	}
 
+	/**
+	 * This method obtains the AI strategy based on user input
+	 * 
+	 * @return the selected AI strategy
+	 */
 	private String getAIStrategy() {
 		System.out.println("Choose AI difficulty: Normal (N) - Unbeatable (U)");
 		String result = Main.scanner.next().toLowerCase();
@@ -64,6 +73,12 @@ public class TicTacToe {
 		return result;
 	}
 
+	/**
+	 * This method determines whether the Tic Tac Toe game is played with an AI or
+	 * with 2 players
+	 * 
+	 * @return the selected game mode
+	 */
 	public String getGameMode() {
 		String result;
 		System.out.println("Choose game mode: Two player game (P) - Play against AI (A)");
@@ -75,6 +90,11 @@ public class TicTacToe {
 		return result.toLowerCase();
 	}
 
+	/**
+	 * This method initialises the game when matching against an AI
+	 * 
+	 * @param ai the AI with a given strategy
+	 */
 	public void aiGameMode(AI ai) {
 		boolean flag = true;
 		do {
@@ -104,6 +124,9 @@ public class TicTacToe {
 		} while (flag);
 	}
 
+	/**
+	 * This method initialises the game when there are two players
+	 */
 	public void twoPlayerGameMode() {
 		boolean flag = true;
 		do {
@@ -123,6 +146,11 @@ public class TicTacToe {
 		} while (flag);
 	}
 
+	/**
+	 * This method obtains the placement of a symbol by the player
+	 * 
+	 * @param player the current player
+	 */
 	public void getPlacement(String player) {
 
 		int pos;
@@ -140,27 +168,14 @@ public class TicTacToe {
 		printGameBoard(gameBoard);
 	}
 
+	/**
+	 * This method check who the winner is. If there is no winner, it is a draw
+	 * 
+	 * @return The message stating who won or if it was a draw
+	 */
 	public String checkWinner() {
-		List topRow = Arrays.asList(1, 2, 3);
-		List midRow = Arrays.asList(4, 5, 6);
-		List botRow = Arrays.asList(7, 8, 9);
-		List leftCol = Arrays.asList(1, 4, 7);
-		List midCol = Arrays.asList(2, 5, 8);
-		List rightCol = Arrays.asList(3, 6, 9);
-		List diagonal1 = Arrays.asList(1, 5, 9);
-		List diagonal2 = Arrays.asList(7, 5, 3);
 
-		List<List> winCon = new ArrayList<List>();
-		winCon.add(topRow);
-		winCon.add(midRow);
-		winCon.add(botRow);
-		winCon.add(leftCol);
-		winCon.add(midCol);
-		winCon.add(rightCol);
-		winCon.add(diagonal1);
-		winCon.add(diagonal2);
-
-		for (List list : winCon) {
+		for (List<Integer> list : winCondition) {
 			if (player1Pos.containsAll(list)) {
 				gameEnd = true;
 				return "Player 1 Wins!";
@@ -176,6 +191,13 @@ public class TicTacToe {
 		return "";
 	}
 
+	/**
+	 * This method places the symbol on the Tic Tac Toe board
+	 * 
+	 * @param gameBoard the current state of the game board
+	 * @param pos       the position of the placement
+	 * @param user      the player
+	 */
 	public void placePiece(char[][] gameBoard, int pos, String user) {
 
 		char symbol = 'X';

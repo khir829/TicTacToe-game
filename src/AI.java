@@ -4,14 +4,22 @@ public class AI {
 
 	private StrategyAI strategy;
 
-	public AI() {
-		super();
+	/**
+	 * This method gets the position of symbol placement of the AI
+	 * 
+	 * @param player1Pos The current positions of symbols of the first player
+	 * @param player2Pos The current positions of symbols of the AI
+	 * @return the position of the placement
+	 */
+	public int placement(ArrayList<Integer> player1Pos, ArrayList<Integer> AIPos) {
+		return strategy.SymbolPlacement(player1Pos, AIPos);
 	}
 
-	public int placement(ArrayList<Integer> player1Pos, ArrayList<Integer> player2Pos) {
-		return strategy.SymbolPlacement(player1Pos, player2Pos);
-	}
-
+	/**
+	 * This method sets the strategy of the AI
+	 * 
+	 * @param strategy the strategy of the AI
+	 */
 	public void setStrategy(StrategyAI strategy) {
 		this.strategy = strategy;
 	}
