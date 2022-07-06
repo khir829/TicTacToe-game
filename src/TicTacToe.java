@@ -34,13 +34,15 @@ public class TicTacToe {
 
 		String gameMode;
 
+		// Welcome and initilisation message
 		System.out.println("Welcome to the Tic Tac Toe game application!");
-
 		System.out.println("Top row 1-3 from left to right\n" + "Middle row 4-6 from left to right\n"
 				+ "Bottom row 7-9 from left to right");
 
 		gameMode = getGameMode();
 
+		// A 2 player game or an AI game is determined by user input.
+		// If it is a AI game, the AI is initialised
 		if (gameMode.equals("p")) {
 			printGameBoard(gameBoard);
 			twoPlayerGameMode();
@@ -103,7 +105,6 @@ public class TicTacToe {
 				flag = false;
 				System.out.println("Player " + player1Pos);
 				System.out.println("AI " + player2Pos);
-
 				System.out.println(checkWinner());
 				break;
 			}
