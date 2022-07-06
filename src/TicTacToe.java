@@ -100,7 +100,7 @@ public class TicTacToe {
 	public void aiGameMode(AI ai) {
 		boolean flag = true;
 		do {
-			getPlacement("Player 1");
+			getPlacement("Player 1", null);
 			if (gameEnd) {
 				flag = false;
 				System.out.println("Player " + player1Pos);
@@ -109,16 +109,11 @@ public class TicTacToe {
 				break;
 			}
 
-			placePiece(gameBoard, ai.placement(player1Pos, player2Pos), "AI");
-			checkWinner();
-			System.out.println("\nAI makes a move\n");
-			printGameBoard(gameBoard);
-
+			getPlacement("AI", ai);
 			if (gameEnd) {
 				flag = false;
 				System.out.println("Player " + player1Pos);
 				System.out.println("AI " + player2Pos);
-
 				System.out.println(checkWinner());
 				break;
 			}
@@ -131,14 +126,14 @@ public class TicTacToe {
 	public void twoPlayerGameMode() {
 		boolean flag = true;
 		do {
-			getPlacement("Player 1");
+			getPlacement("Player 1", null);
 			if (gameEnd) {
 				flag = false;
 				System.out.println(checkWinner());
 				break;
 			}
 
-			getPlacement("Player 2");
+			getPlacement("Player 2", null);
 			if (gameEnd) {
 				flag = false;
 				System.out.println(checkWinner());
@@ -152,21 +147,26 @@ public class TicTacToe {
 	 * 
 	 * @param player the current player
 	 */
-	public void getPlacement(String player) {
-
+	public void getPlacement(String player, AI ai) {
 		int pos;
-		System.out.println("\n" + player + " Enter your placement (1-9): \n");
-		pos = Main.scanner.nextInt();
-
-		while (player1Pos.contains(pos) || player2Pos.contains(pos) || pos < 1 || pos > 9) {
-			printGameBoard(gameBoard);
-			System.out.println("Enter a valid position");
+		if (ai == null) {
+			System.out.println("\n" + player + " Enter your placement (1-9): \n");
 			pos = Main.scanner.nextInt();
-		}
 
-		placePiece(gameBoard, pos, player);
-		checkWinner();
-		printGameBoard(gameBoard);
+			while (player1Pos.contains(pos) || player2Pos.contains(pos) || pos < 1 || pos > 9) {
+				printGameBoard(gameBoard);
+				System.out.println("Enter a valid position");
+				pos = Main.scanner.nextInt();
+			}
+			placePiece(gameBoard, pos, player);
+			checkWinner();
+			printGameBoard(gameBoard);
+		} else {
+			placePiece(gameBoard, ai.placement(player1Pos, player2Pos), "AI");
+			checkWinner();
+			System.out.println("\nAI makes a move\n");
+			printGameBoard(gameBoard);
+		}
 	}
 
 	/**
