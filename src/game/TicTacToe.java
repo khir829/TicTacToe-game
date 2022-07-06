@@ -1,6 +1,12 @@
+package game;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import strategyAI.AI;
+import strategyAI.StrategyAI;
+import strategyAI.StrategyFactory;
 
 public class TicTacToe {
 	private char[][] gameBoard = { { ' ', '|', ' ', '|', ' ' }, { '-', '+', '-', '+', '-' },
@@ -48,12 +54,9 @@ public class TicTacToe {
 			selectedGameMode(null);
 		} else {
 			AI ai = new AI();
-			String strategy = getAIStrategy();
-			if (strategy.equals("n")) {
-				ai.setStrategy(new RandomStrategy());
-			} else {
-				ai.setStrategy(new UnbeatableStrategy());
-			}
+			String string = getAIStrategy();
+			StrategyAI strategy = StrategyFactory.setUp(string);
+			ai.setStrategy(strategy);
 			printGameBoard(gameBoard);
 			selectedGameMode(ai);
 		}
@@ -67,8 +70,8 @@ public class TicTacToe {
 	 */
 	private String getAIStrategy() {
 		System.out.println("Choose AI difficulty: Normal (N) - Unbeatable (U)");
-		String result = Main.scanner.next().toLowerCase();
-		while (!result.equals("n") && !result.equals("u")) {
+		String result = Main.scanner.next().toUpperCase();
+		while (!result.equals("N") && !result.equals("U")) {
 			System.out.println("Please type either 'N' or 'U' for Normal difficulty or Unbeatable difficulty");
 			result = Main.scanner.next();
 		}

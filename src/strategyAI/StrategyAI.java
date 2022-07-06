@@ -1,3 +1,4 @@
+package strategyAI;
 import java.util.ArrayList;
 
 public interface StrategyAI {
