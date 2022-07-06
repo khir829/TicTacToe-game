@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 public class UnbeatableStrategy implements StrategyAI {
+	private List<List<Integer>> winCondition = Arrays.asList(Arrays.asList(1, 2, 3), Arrays.asList(4, 5, 6),
+			Arrays.asList(7, 8, 9), Arrays.asList(1, 4, 7), Arrays.asList(2, 5, 8), Arrays.asList(3, 6, 9),
+			Arrays.asList(1, 5, 9), Arrays.asList(7, 5, 3));
 
 	@Override
 	public int SymbolPlacement(ArrayList<Integer> player1Pos, ArrayList<Integer> AIPos) {
@@ -100,26 +103,8 @@ public class UnbeatableStrategy implements StrategyAI {
 	 * @return true or false depending on the symbol positions
 	 */
 	private boolean checkWinner(ArrayList<Integer> pos) {
-		List topRow = Arrays.asList(1, 2, 3);
-		List midRow = Arrays.asList(4, 5, 6);
-		List botRow = Arrays.asList(7, 8, 9);
-		List leftCol = Arrays.asList(1, 4, 7);
-		List midCol = Arrays.asList(2, 5, 8);
-		List rightCol = Arrays.asList(3, 6, 9);
-		List diagonal1 = Arrays.asList(1, 5, 9);
-		List diagonal2 = Arrays.asList(7, 5, 3);
 
-		List<List> winCon = new ArrayList<List>();
-		winCon.add(topRow);
-		winCon.add(midRow);
-		winCon.add(botRow);
-		winCon.add(leftCol);
-		winCon.add(midCol);
-		winCon.add(rightCol);
-		winCon.add(diagonal1);
-		winCon.add(diagonal2);
-
-		for (List list : winCon) {
+		for (List<Integer> list : winCondition) {
 			if (pos.containsAll(list)) {
 				return true;
 			}
