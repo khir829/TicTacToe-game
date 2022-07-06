@@ -45,7 +45,7 @@ public class TicTacToe {
 		// If it is a AI game, the AI is initialised
 		if (gameMode.equals("p")) {
 			printGameBoard(gameBoard);
-			twoPlayerGameMode();
+			selectedGameMode(null);
 		} else {
 			AI ai = new AI();
 			String strategy = getAIStrategy();
@@ -55,7 +55,7 @@ public class TicTacToe {
 				ai.setStrategy(new UnbeatableStrategy());
 			}
 			printGameBoard(gameBoard);
-			aiGameMode(ai);
+			selectedGameMode(ai);
 		}
 
 	}
@@ -93,50 +93,36 @@ public class TicTacToe {
 	}
 
 	/**
-	 * This method initialises the game when matching against an AI
+	 * This method initialises the game when based on game mode
+	 * 
+	 * (2 player or against AI)
 	 * 
 	 * @param ai the AI with a given strategy
 	 */
-	public void aiGameMode(AI ai) {
+	public void selectedGameMode(AI ai) {
 		boolean flag = true;
+		String otherPlayer = "Player 2";
+
+		if (ai != null) {
+			otherPlayer = "AI";
+		}
+
 		do {
 			getPlacement("Player 1", null);
 			if (gameEnd) {
 				flag = false;
-				System.out.println("Player " + player1Pos);
-				System.out.println("AI " + player2Pos);
-				System.out.println(checkWinner());
+				System.out.println("Player 1 " + player1Pos);
+				System.out.println(otherPlayer + " " + player2Pos);
+				System.out.println(checkWinner(otherPlayer));
 				break;
 			}
 
-			getPlacement("AI", ai);
+			getPlacement(otherPlayer, ai);
 			if (gameEnd) {
 				flag = false;
-				System.out.println("Player " + player1Pos);
-				System.out.println("AI " + player2Pos);
-				System.out.println(checkWinner());
-				break;
-			}
-		} while (flag);
-	}
-
-	/**
-	 * This method initialises the game when there are two players
-	 */
-	public void twoPlayerGameMode() {
-		boolean flag = true;
-		do {
-			getPlacement("Player 1", null);
-			if (gameEnd) {
-				flag = false;
-				System.out.println(checkWinner());
-				break;
-			}
-
-			getPlacement("Player 2", null);
-			if (gameEnd) {
-				flag = false;
-				System.out.println(checkWinner());
+				System.out.println("Player 1 " + player1Pos);
+				System.out.println(otherPlayer + " " + player2Pos);
+				System.out.println(checkWinner(otherPlayer));
 				break;
 			}
 		} while (flag);
@@ -159,11 +145,11 @@ public class TicTacToe {
 				pos = Main.scanner.nextInt();
 			}
 			placePiece(gameBoard, pos, player);
-			checkWinner();
+			checkWinner("player");
 			printGameBoard(gameBoard);
 		} else {
 			placePiece(gameBoard, ai.placement(player1Pos, player2Pos), "AI");
-			checkWinner();
+			checkWinner("AI");
 			System.out.println("\nAI makes a move\n");
 			printGameBoard(gameBoard);
 		}
@@ -174,7 +160,7 @@ public class TicTacToe {
 	 * 
 	 * @return The message stating who won or if it was a draw
 	 */
-	public String checkWinner() {
+	public String checkWinner(String otherPlayer) {
 
 		for (List<Integer> list : winCondition) {
 			if (player1Pos.containsAll(list)) {
@@ -182,7 +168,7 @@ public class TicTacToe {
 				return "Player 1 Wins!";
 			} else if (player2Pos.containsAll(list)) {
 				gameEnd = true;
-				return "Player 2 Wins!";
+				return otherPlayer + " Wins!";
 			}
 		}
 		if (player1Pos.size() + player2Pos.size() == 9) {
