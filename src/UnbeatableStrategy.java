@@ -11,7 +11,7 @@ public class UnbeatableStrategy implements StrategyAI {
 
 	@Override
 	public int SymbolPlacement(ArrayList<Integer> player1Pos, ArrayList<Integer> AIPos) {
-		int bestMove = minimax(player1Pos, AIPos).get(1);
+		int bestMove = minimax(player1Pos, AIPos)[1];
 
 		return bestMove;
 	}
@@ -23,14 +23,14 @@ public class UnbeatableStrategy implements StrategyAI {
 	 * @param AIPosThe   current positions of symbols of the AI
 	 * @return the score of the placement
 	 */
-	public ArrayList<Integer> minimax(ArrayList<Integer> player1Pos, ArrayList<Integer> AIPos) {
+	public int[] minimax(ArrayList<Integer> player1Pos, ArrayList<Integer> AIPos) {
 		ArrayList<Integer> newPlayerMoves = player1Pos;
 		ArrayList<Integer> newAIMoves = AIPos;
 		ArrayList<Integer> emptySpots = new ArrayList<Integer>();
-		ArrayList<Integer> result = new ArrayList<Integer>();
-
-		ArrayList<Integer> best = new ArrayList<Integer>();
 		Map<Integer, Integer> moveList = new HashMap<Integer, Integer>();
+
+		int[] result = new int[2];
+		int[] best = new int[2];
 		int bestScore;
 
 		for (int i = 1; i <= 9; i++) {
@@ -39,13 +39,13 @@ public class UnbeatableStrategy implements StrategyAI {
 			}
 		}
 		if (checkWinner(player1Pos)) {
-			result.add(-1 * (emptySpots.size() + 1));
+			result[0] = (-1 * (emptySpots.size() + 1));
 			return result;
 		} else if (checkWinner(AIPos)) {
-			result.add(1 * (emptySpots.size() + 1));
+			result[0] = (1 * (emptySpots.size() + 1));
 			return result;
 		} else if (emptySpots.size() == 0) {
-			result.add(0);
+			result[0] = 0;
 			return result;
 		}
 
@@ -55,14 +55,14 @@ public class UnbeatableStrategy implements StrategyAI {
 			if (player1Pos.size() == AIPos.size()) {
 
 				newPlayerMoves.add(emptySpots.get(i));
-				score = minimax(newPlayerMoves, AIPos).get(0);
+				score = minimax(newPlayerMoves, AIPos)[0];
 				moveList.put(emptySpots.get(i), score);
 				newPlayerMoves.remove(emptySpots.get(i));
 
 			} else {
 
 				newAIMoves.add(emptySpots.get(i));
-				score = minimax(player1Pos, newAIMoves).get(0);
+				score = minimax(player1Pos, newAIMoves)[0];
 				moveList.put(emptySpots.get(i), score);
 				newAIMoves.remove(emptySpots.get(i));
 
@@ -71,24 +71,20 @@ public class UnbeatableStrategy implements StrategyAI {
 
 		if (player1Pos.size() == AIPos.size()) {
 			bestScore = 1000;
-			best.add(bestScore);
-			best.add(1);
 			for (int key : moveList.keySet()) {
 				if (moveList.get(key) < bestScore) {
 					bestScore = moveList.get(key);
-					best.set(0, moveList.get(key));
-					best.set(1, key);
+					best[0] = moveList.get(key);
+					best[1] = key;
 				}
 			}
 		} else {
 			bestScore = -1000;
-			best.add(bestScore);
-			best.add(1);
 			for (int key : moveList.keySet()) {
 				if (moveList.get(key) > bestScore) {
 					bestScore = moveList.get(key);
-					best.set(0, moveList.get(key));
-					best.set(1, key);
+					best[0] = moveList.get(key);
+					best[1] = key;
 				}
 			}
 		}
@@ -102,7 +98,7 @@ public class UnbeatableStrategy implements StrategyAI {
 	 * @param pos the position of the symbols
 	 * @return true or false depending on the symbol positions
 	 */
-	private boolean checkWinner(ArrayList<Integer> pos) {
+	public boolean checkWinner(ArrayList<Integer> pos) {
 
 		for (List<Integer> list : winCondition) {
 			if (pos.containsAll(list)) {
