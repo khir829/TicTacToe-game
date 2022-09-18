@@ -11,7 +11,7 @@ public class TicTacToe {
   private final char[][] cleanBoard = {{' ', '|', ' ', '|', ' '}, {'-', '+', '-', '+', '-'},
       {' ', '|', ' ', '|', ' '}, {'-', '+', '-', '+', '-'}, {' ', '|', ' ', '|', ' '}};
   private char[][] gameBoard = new char[5][5];
-  private List<List<Integer>> winCondition =
+  private static List<List<Integer>> WIN_CONDITION =
       Arrays.asList(Arrays.asList(1, 2, 3), Arrays.asList(4, 5, 6), Arrays.asList(7, 8, 9),
           Arrays.asList(1, 4, 7), Arrays.asList(2, 5, 8), Arrays.asList(3, 6, 9),
           Arrays.asList(1, 5, 9), Arrays.asList(7, 5, 3));
@@ -117,6 +117,15 @@ public class TicTacToe {
   }
 
   /**
+   * This method returns the list of win conditions of Tic Tac Toe
+   * 
+   * @return list of win conditions of Tic Tac Toe
+   */
+  public static List<List<Integer>> getWinCondition() {
+    return WIN_CONDITION;
+  }
+
+  /**
    * This method determines whether the Tic Tac Toe game is played with an AI or with 2 players
    * 
    * @return the selected game mode
@@ -203,7 +212,7 @@ public class TicTacToe {
    */
   public String checkWinner(String otherPlayer) {
 
-    for (List<Integer> list : winCondition) {
+    for (List<Integer> list : WIN_CONDITION) {
       if (player1Pos.containsAll(list)) {
         gameEnd = true;
         return "Player 1 Wins!";
