@@ -81,10 +81,11 @@ public class TicTacToe {
       if (userDecision.equals("Y")) {
         startGame();
       } else if (userDecision.equals("N")) {
+        confirmation = false;
         System.out.println("Terminating...");
       } else {
-        System.out.println("Please enter 'Y' or 'N'");
         confirmation = true;
+        System.out.println("Please enter 'Y' or 'N'");
       }
     } while (confirmation);
   }
