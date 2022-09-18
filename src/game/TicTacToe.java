@@ -41,7 +41,9 @@ public class TicTacToe {
    */
   public void startGame() {
 
+    boolean confirmation = false;
     String gameMode;
+    String userDecision;
 
     // Welcome and initilisation message
     System.out.println("Welcome to the Tic Tac Toe game application!");
@@ -63,6 +65,20 @@ public class TicTacToe {
       selectedGameMode(ai);
     }
 
+
+    do {
+      System.out.println("Play again? (Y/N)");
+      userDecision = Main.scanner.next().toUpperCase();
+
+      if (userDecision.equals("Y")) {
+        startGame();
+      } else if (userDecision.equals("N")) {
+        System.out.println("Terminating...");
+      } else {
+        System.out.println("Please enter 'Y' or 'N'");
+        confirmation = true;
+      }
+    } while (confirmation);
   }
 
   /**
