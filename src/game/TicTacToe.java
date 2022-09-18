@@ -46,7 +46,7 @@ public class TicTacToe {
     String gameMode;
     String userDecision;
 
-    // Welcome and initilisation message
+    // Welcome and initialisation message
     System.out.println("Welcome to the Tic Tac Toe game application!");
     System.out.println("Top row 1-3 from left to right\n" + "Middle row 4-6 from left to right\n"
         + "Bottom row 7-9 from left to right");
@@ -54,11 +54,7 @@ public class TicTacToe {
     gameMode = getGameMode();
 
     // Set clean board
-    for (int i = 0; i < cleanBoard.length; i++) {
-      for (int j = 0; j < cleanBoard[i].length; j++) {
-        gameBoard[i][j] = cleanBoard[i][j];
-      }
-    }
+    setNewBoard();
 
     // A 2 player game or an AI game is determined by user input.
     // If it is a AI game, the AI is initialised
@@ -107,6 +103,17 @@ public class TicTacToe {
       result = Main.scanner.next();
     }
     return result;
+  }
+
+  /**
+   * This method sets the gameboard to a new state
+   */
+  private void setNewBoard() {
+    for (int i = 0; i < cleanBoard.length; i++) {
+      for (int j = 0; j < cleanBoard[i].length; j++) {
+        gameBoard[i][j] = cleanBoard[i][j];
+      }
+    }
   }
 
   /**
