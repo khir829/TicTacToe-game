@@ -8,8 +8,9 @@ import strategyAI.StrategyAI;
 import strategyAI.StrategyFactory;
 
 public class TicTacToe {
-  private char[][] gameBoard = {{' ', '|', ' ', '|', ' '}, {'-', '+', '-', '+', '-'},
+  private final char[][] cleanBoard = {{' ', '|', ' ', '|', ' '}, {'-', '+', '-', '+', '-'},
       {' ', '|', ' ', '|', ' '}, {'-', '+', '-', '+', '-'}, {' ', '|', ' ', '|', ' '}};
+  private char[][] gameBoard = new char[5][5];
   private List<List<Integer>> winCondition =
       Arrays.asList(Arrays.asList(1, 2, 3), Arrays.asList(4, 5, 6), Arrays.asList(7, 8, 9),
           Arrays.asList(1, 4, 7), Arrays.asList(2, 5, 8), Arrays.asList(3, 6, 9),
@@ -27,8 +28,8 @@ public class TicTacToe {
    * 
    * @param gameBoard the state of the gamme
    */
-  public static void printGameBoard(char[][] gameBoard) {
-    for (char[] row : gameBoard) {
+  public static void printGameBoard(char[][] board) {
+    for (char[] row : board) {
       for (char c : row) {
         System.out.print(c);
       }
@@ -52,6 +53,13 @@ public class TicTacToe {
 
     gameMode = getGameMode();
 
+    // Set clean board
+    for (int i = 0; i < cleanBoard.length; i++) {
+      for (int j = 0; j < cleanBoard[i].length; j++) {
+        gameBoard[i][j] = cleanBoard[i][j];
+      }
+    }
+
     // A 2 player game or an AI game is determined by user input.
     // If it is a AI game, the AI is initialised
     if (gameMode.equals("p")) {
@@ -65,6 +73,10 @@ public class TicTacToe {
       selectedGameMode(ai);
     }
 
+    // Clear both player's positions to prepare for next game
+    player1Pos.clear();
+    player2Pos.clear();
+    gameEnd = false;
 
     do {
       System.out.println("Play again? (Y/N)");
