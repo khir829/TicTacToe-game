@@ -18,7 +18,7 @@ public class TicTacToe {
 
   private ArrayList<Integer> player1Pos = new ArrayList<Integer>();
   private ArrayList<Integer> player2Pos = new ArrayList<Integer>();
-  AI ai = new AI();
+  private AI ai = new AI();
   private String strategy;
   private StrategyAI strategyOfAI;
   private boolean gameEnd = false;
@@ -130,7 +130,7 @@ public class TicTacToe {
    * 
    * @return the selected game mode
    */
-  public String getGameMode() {
+  private String getGameMode() {
     String result;
     System.out.println("Choose game mode: Two player game (P) - Play against AI (A)");
     result = Main.scanner.next();
@@ -149,7 +149,7 @@ public class TicTacToe {
    * 
    * @param ai the AI with a given strategy
    */
-  public void selectedGameMode(AI ai) {
+  private void selectedGameMode(AI ai) {
     boolean flag = true;
     String otherPlayer = "Player 2";
 
@@ -183,7 +183,7 @@ public class TicTacToe {
    * 
    * @param player the current player
    */
-  public void getPlacement(String player, AI ai) {
+  private void getPlacement(String player, AI ai) {
     int pos;
     if (ai == null) {
       System.out.println("\n" + player + " Enter your placement (1-9): \n");
@@ -210,7 +210,7 @@ public class TicTacToe {
    * 
    * @return The message stating who won or if it was a draw
    */
-  public String checkWinner(String otherPlayer) {
+  private String checkWinner(String otherPlayer) {
 
     for (List<Integer> list : WIN_CONDITION) {
       if (player1Pos.containsAll(list)) {
@@ -235,7 +235,7 @@ public class TicTacToe {
    * @param pos the position of the placement
    * @param user the player
    */
-  public void placePiece(char[][] gameBoard, int pos, String user) {
+  private void placePiece(char[][] gameBoard, int pos, String user) {
 
     char symbol = 'X';
 
