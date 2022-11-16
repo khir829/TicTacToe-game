@@ -23,6 +23,4 @@ public class GameBoard {
   public List<List<Integer>> getWinCondition() {
     return winCondition;
   }
-
-
 }
