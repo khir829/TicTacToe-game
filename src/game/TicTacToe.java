@@ -140,48 +140,35 @@ public class TicTacToe {
 
     do {
       getHumanPlacement(player1);
-      if (gameEnd) {
-        flag = false;
-        System.out.println("Player 1 " + player1.getPlayerPosition());
-        System.out.println(otherPlayer + " " + player2.getPlayerPosition());
-        System.out.println(checkWinner());
-        break;
-      }
+      flag = getGameEnd();
+
 
       getHumanPlacement(player2);
-      if (gameEnd) {
-        flag = false;
-        System.out.println("Player 1 " + player1.getPlayerPosition());
-        System.out.println(otherPlayer + " " + player2.getPlayerPosition());
-        System.out.println(checkWinner());
-        break;
-      }
+      flag = getGameEnd();
+
     } while (flag);
   }
 
   private void aiGame(AI ai) {
     boolean flag = true;
-    String otherPlayer = "AI";
 
     do {
       getHumanPlacement(player1);
-      if (gameEnd) {
-        flag = false;
-        System.out.println("Player 1 " + player1.getPlayerPosition());
-        System.out.println(otherPlayer + " " + player2.getPlayerPosition());
-        System.out.println(checkWinner());
-        break;
-      }
+      flag = getGameEnd();
 
       getAIPlacement(player2, ai);
-      if (gameEnd) {
-        flag = false;
-        System.out.println("Player 1 " + player1.getPlayerPosition());
-        System.out.println(otherPlayer + " " + player2.getPlayerPosition());
-        System.out.println(checkWinner());
-        break;
-      }
+      flag = getGameEnd();
     } while (flag);
+  }
+
+  private boolean getGameEnd() {
+    if (gameEnd) {
+      System.out.println(player1.getName() + " " + player1.getPlayerPosition());
+      System.out.println(player2.getName() + " " + player2.getPlayerPosition());
+      System.out.println(checkWinner());
+      return false;
+    }
+    return true;
   }
 
   /**
