@@ -134,21 +134,26 @@ public class TicTacToe {
     return result.toLowerCase();
   }
 
+  /**
+   * Plays the two player Tic Tac Toe game mode
+   */
   private void twoPlayerGame() {
     boolean flag = true;
-    String otherPlayer = "Player 2";
 
     do {
       getHumanPlacement(player1);
       flag = getGameEnd();
 
-
       getHumanPlacement(player2);
       flag = getGameEnd();
-
     } while (flag);
   }
 
+  /**
+   * Plays the AI Tic Tac Toe game mode with an AI strategy behaviour as a parameter
+   * 
+   * @param ai The AI
+   */
   private void aiGame(AI ai) {
     boolean flag = true;
 
@@ -161,6 +166,11 @@ public class TicTacToe {
     } while (flag);
   }
 
+  /**
+   * Prints the game end print message and determines the winner or if it is a draw
+   * 
+   * @return Will return false if the game has ended
+   */
   private boolean getGameEnd() {
     if (gameEnd) {
       System.out.println(player1.getName() + " " + player1.getPlayerPosition());
@@ -176,7 +186,7 @@ public class TicTacToe {
    * 
    * (2 player or against AI)
    * 
-   * @param ai the AI with a given strategy
+   * @param ai The AI behaviour
    */
   private void selectedGameMode(GameMode mode) {
     if (mode == GameMode.TWO_PLAYER_MODE) {
@@ -187,6 +197,11 @@ public class TicTacToe {
 
   }
 
+  /**
+   * Gets the Tic Tac Toe placement for a human player
+   * 
+   * @param player The player
+   */
   private void getHumanPlacement(Player player) {
     int pos;
 
@@ -204,6 +219,12 @@ public class TicTacToe {
     printGameBoard(board.getGameBoard());
   }
 
+  /**
+   * Gets the Tic Tac Toe placement for an AI player
+   * 
+   * @param player The AI player
+   * @param ai The AI behaviour
+   */
   private void getAIPlacement(Player player, AI ai) {
     placePiece(board.getGameBoard(),
         ai.placement(player1.getPlayerPosition(), player2.getPlayerPosition()), player);
@@ -244,10 +265,8 @@ public class TicTacToe {
    * @param user the player
    */
   private void placePiece(char[][] gameBoard, int pos, Player player) {
-
     char symbol = player.getPlayerSymbol();
     player.getPlayerPosition().add(pos);
-
 
     switch (pos) {
       case 1:
@@ -279,5 +298,4 @@ public class TicTacToe {
         break;
     }
   }
-
 }
