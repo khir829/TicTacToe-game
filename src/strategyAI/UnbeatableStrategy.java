@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import game.TicTacToe;
+import game.GameBoard;
 
 public class UnbeatableStrategy implements StrategyAI {
+
+  private GameBoard board = new GameBoard();
 
   @Override
   public int SymbolPlacement(ArrayList<Integer> player1Pos, ArrayList<Integer> AIPos) {
@@ -105,7 +107,7 @@ public class UnbeatableStrategy implements StrategyAI {
    */
   public boolean checkWinner(ArrayList<Integer> pos) {
     // Loop through the win condition and compare the positions
-    for (List<Integer> list : TicTacToe.getWinCondition()) {
+    for (List<Integer> list : board.getWinCondition()) {
       if (pos.containsAll(list)) {
         return true;
       }
