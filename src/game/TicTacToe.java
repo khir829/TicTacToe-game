@@ -11,8 +11,8 @@ public class TicTacToe {
   }
 
   private GameBoard board = new GameBoard();
-  private Player player1 = new Player();
-  private Player player2 = new Player();
+  private Player player1 = new Player(PlayerNumber.ONE);
+  private Player player2 = new Player(PlayerNumber.TWO);
   private AI ai = new AI();
   private String strategy;
   private StrategyAI strategyOfAI;
@@ -55,12 +55,16 @@ public class TicTacToe {
     // If it is a AI game, the AI is initialised
     if (gameMode.equals("p")) {
       printGameBoard(board.getGameBoard());
+      player1.setName("Player 1");
+      player2.setName("Player 2");
       selectedGameMode(GameMode.TWO_PLAYER_MODE);
     } else {
       strategy = getAIStrategy();
       strategyOfAI = StrategyFactory.setUp(strategy);
       ai.setStrategy(strategyOfAI);
       printGameBoard(board.getGameBoard());
+      player1.setName("Player 1");
+      player2.setName("AI");
       selectedGameMode(GameMode.AI_MODE);
     }
 
@@ -135,21 +139,21 @@ public class TicTacToe {
     String otherPlayer = "Player 2";
 
     do {
-      getHumanPlacement("Player 1");
+      getHumanPlacement(player1);
       if (gameEnd) {
         flag = false;
         System.out.println("Player 1 " + player1.getPlayerPosition());
         System.out.println(otherPlayer + " " + player2.getPlayerPosition());
-        System.out.println(checkWinner(otherPlayer));
+        System.out.println(checkWinner());
         break;
       }
 
-      getHumanPlacement(otherPlayer);
+      getHumanPlacement(player2);
       if (gameEnd) {
         flag = false;
         System.out.println("Player 1 " + player1.getPlayerPosition());
         System.out.println(otherPlayer + " " + player2.getPlayerPosition());
-        System.out.println(checkWinner(otherPlayer));
+        System.out.println(checkWinner());
         break;
       }
     } while (flag);
@@ -160,21 +164,21 @@ public class TicTacToe {
     String otherPlayer = "AI";
 
     do {
-      getHumanPlacement("Player 1");
+      getHumanPlacement(player1);
       if (gameEnd) {
         flag = false;
         System.out.println("Player 1 " + player1.getPlayerPosition());
         System.out.println(otherPlayer + " " + player2.getPlayerPosition());
-        System.out.println(checkWinner(otherPlayer));
+        System.out.println(checkWinner());
         break;
       }
 
-      getAIPlacement(otherPlayer, ai);
+      getAIPlacement(player2, ai);
       if (gameEnd) {
         flag = false;
         System.out.println("Player 1 " + player1.getPlayerPosition());
         System.out.println(otherPlayer + " " + player2.getPlayerPosition());
-        System.out.println(checkWinner(otherPlayer));
+        System.out.println(checkWinner());
         break;
       }
     } while (flag);
@@ -196,10 +200,10 @@ public class TicTacToe {
 
   }
 
-  private void getHumanPlacement(String player) {
+  private void getHumanPlacement(Player player) {
     int pos;
 
-    System.out.println("\n" + player + " Enter your placement (1-9): \n");
+    System.out.println("\n" + player.getName() + " Enter your placement (1-9): \n");
     pos = Main.scanner.nextInt();
 
     while (player1.getPlayerPosition().contains(pos) || player2.getPlayerPosition().contains(pos)
@@ -209,14 +213,14 @@ public class TicTacToe {
       pos = Main.scanner.nextInt();
     }
     placePiece(board.getGameBoard(), pos, player);
-    checkWinner("player");
+    checkWinner();
     printGameBoard(board.getGameBoard());
   }
 
-  private void getAIPlacement(String player, AI ai) {
+  private void getAIPlacement(Player player, AI ai) {
     placePiece(board.getGameBoard(),
-        ai.placement(player1.getPlayerPosition(), player2.getPlayerPosition()), "AI");
-    checkWinner("AI");
+        ai.placement(player1.getPlayerPosition(), player2.getPlayerPosition()), player);
+    checkWinner();
     System.out.println("\nAI makes a move\n");
     printGameBoard(board.getGameBoard());
   }
@@ -227,15 +231,15 @@ public class TicTacToe {
    * 
    * @return The message stating who won or if it was a draw
    */
-  private String checkWinner(String otherPlayer) {
+  private String checkWinner() {
 
     for (List<Integer> list : board.getWinCondition()) {
       if (player1.getPlayerPosition().containsAll(list)) {
         gameEnd = true;
-        return "Player 1 Wins!";
+        return player1.getName() + " Wins!";
       } else if (player2.getPlayerPosition().containsAll(list)) {
         gameEnd = true;
-        return otherPlayer + " Wins!";
+        return player2.getName() + " Wins!";
       }
     }
     if (player1.getPlayerPosition().size() + player2.getPlayerPosition().size() == 9) {
@@ -252,17 +256,11 @@ public class TicTacToe {
    * @param pos the position of the placement
    * @param user the player
    */
-  private void placePiece(char[][] gameBoard, int pos, String user) {
+  private void placePiece(char[][] gameBoard, int pos, Player player) {
 
-    char symbol = 'X';
+    char symbol = player.getPlayerSymbol();
+    player.getPlayerPosition().add(pos);
 
-    if (user.equals("Player 1")) {
-      player1.getPlayerPosition().add(pos);
-      symbol = 'X';
-    } else {
-      player2.getPlayerPosition().add(pos);
-      symbol = 'O';
-    }
 
     switch (pos) {
       case 1:
